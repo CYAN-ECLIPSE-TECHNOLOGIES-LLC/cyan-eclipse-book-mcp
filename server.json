@@ -1,0 +1,8 @@
+{
+ "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+ "name": "io.github.CYAN-ECLIPSE-TECHNOLOGIES-LLC/book",
+ "title": "Eclipse Book MCP",
+ "description": "Market data + venue access layer \u2014 not an exchange: one book, one fee truth, one ledger of record.",
+ "version": "0.1.0",
+ "websiteUrl": "https://eclipsebazaar.com"
+}
