@@ -4,5 +4,29 @@
  "title": "Eclipse Book MCP",
  "description": "Market data + venue access layer \u2014 not an exchange: one book, one fee truth, one ledger of record.",
  "version": "0.1.0",
- "websiteUrl": "https://eclipsebazaar.com"
+ "websiteUrl": "https://eclipsebazaar.com",
+ "repository": {
+  "source": "github",
+  "url": "https://github.com/CYAN-ECLIPSE-TECHNOLOGIES-LLC/eclipse-book-mcp"
+ },
+ "packages": [
+  {
+   "registryType": "pypi",
+   "identifier": "eclipse-book",
+   "version": "0.1.0",
+   "runtimeHint": "uvx",
+   "transport": {
+    "type": "stdio"
+   }
+  }
+ ],
+ "icons": [
+  {
+   "src": "https://raw.githubusercontent.com/CYAN-ECLIPSE-TECHNOLOGIES-LLC/eclipse-book-mcp/main/icon-512.png",
+   "mimeType": "image/png",
+   "sizes": [
+    "512x512"
+   ]
+  }
+ ]
 }

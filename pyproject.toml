@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "eclipse-book"
+version = "0.1.0"
+description = "Market data + venue access layer \u2014 not an exchange: one book, one fee truth, one ledger of record."
+readme = "PYPI_README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Cyan Eclipse Technologies LLC" },
+]
+keywords = ["mcp", "model-context-protocol", "market-data", "venues", "fees"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries",
+]
+
+[project.urls]
+Homepage = "https://cetech.ai"
+Repository = "https://github.com/CYAN-ECLIPSE-TECHNOLOGIES-LLC/eclipse-book-mcp"
+Vendor = "https://cetech.ai"
+
+[project.scripts]
+eclipse-book = "server:main"
+
+# Version lockstep: this version, the VERSION file, server.json, and the
+# server.py version string all read 0.1.0 - bump them together.
+# Flat layout: the runtime is the top-level server.py module. Runtime
+# data read beside server.py (Path(__file__).parent / ...) is
+# force-included at the same relative path in the wheel.
+[tool.hatch.build.targets.wheel.force-include]
+"server.py" = "server.py"
+"book_engine.py" = "book_engine.py"
+"bazaar-manifest.json" = "bazaar-manifest.json"
+"fixtures.json" = "fixtures.json"
+
+[tool.hatch.build.targets.sdist.force-include]
+"server.py" = "server.py"
+"book_engine.py" = "book_engine.py"
+"bazaar-manifest.json" = "bazaar-manifest.json"
+"fixtures.json" = "fixtures.json"
