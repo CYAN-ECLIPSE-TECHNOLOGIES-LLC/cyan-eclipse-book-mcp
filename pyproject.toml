@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "eclipse-book"
+name = "cyan-eclipse-book"
 version = "0.1.0"
 description = "Market data + venue access layer \u2014 not an exchange: one book, one fee truth, one ledger of record."
 readme = "PYPI_README.md"

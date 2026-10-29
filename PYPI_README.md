@@ -1,4 +1,4 @@
-# eclipse-book
+# cyan-eclipse-book
 
 mcp-name: io.github.CYAN-ECLIPSE-TECHNOLOGIES-LLC/book
 
@@ -7,14 +7,14 @@ mcp-name: io.github.CYAN-ECLIPSE-TECHNOLOGIES-LLC/book
 ## Run it
 
 ```console
-$ pip install eclipse-book
+$ pip install cyan-eclipse-book
 $ eclipse-book           # MCP over stdio, Python stdlib only
 ```
 
 MCP client config:
 
 ```json
-{ "mcpServers": { "eclipse-book": { "command": "uvx", "args": ["eclipse-book"] } } }
+{ "mcpServers": { "cyan-eclipse-book": { "command": "uvx", "args": ["--from", "cyan-eclipse-book", "eclipse-book"] } } }
 ```
 
 ## Tools (17)
