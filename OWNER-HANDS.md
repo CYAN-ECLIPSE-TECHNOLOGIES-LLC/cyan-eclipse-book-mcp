@@ -18,7 +18,7 @@ publisher" - **GitHub** tab. Enter these strings **exactly**:
 |---|---|
 | PyPI Project Name | `cyan-eclipse-book` |
 | GitHub Repository Owner | `CYAN-ECLIPSE-TECHNOLOGIES-LLC` |
-| GitHub Repository Name | `eclipse-book-mcp` |
+| GitHub Repository Name | `cyan-eclipse-book-mcp` |
 | GitHub Workflow Name | `publish-pypi.yml` |
 | Environment Name | `pypi` |
 

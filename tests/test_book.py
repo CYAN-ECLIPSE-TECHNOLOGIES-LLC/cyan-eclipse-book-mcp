@@ -21,9 +21,19 @@ sys.path.insert(0, str(HERE.parent / "eclipse-strike-mcp"))
 import book_engine as eng  # noqa: E402
 
 
+def _adapter_path(dirname):
+    # Workspace layout: the suite's product dirs are siblings
+    # (HERE.parent/<dirname>). Standalone layout: this repo IS
+    # the package root, so the Book server is HERE/server.py.
+    sibling = HERE.parent / dirname / "server.py"
+    if sibling.exists():
+        return sibling
+    return HERE / "server.py"
+
+
 def _load_adapter(name, dirname):
     import importlib.util
-    path = HERE.parent / dirname / "server.py"
+    path = _adapter_path(dirname)
     spec = importlib.util.spec_from_file_location(name, path)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
@@ -345,6 +355,12 @@ class TestCrossAdapterParity(unittest.TestCase):
     lives in the shared core builders (spec 5.2)."""
 
     def test_parity(self):
+        siblings = [HERE.parent / "eclipse-forecast-mcp" / "server.py",
+                    HERE.parent / "eclipse-strike-mcp" / "server.py"]
+        if not all(p.exists() for p in siblings):
+            self.skipTest("sibling adapters absent (standalone "
+                          "checkout); parity runs in the suite "
+                          "workspace layout")
         forecast = _load_adapter("server_forecast",
                                  "eclipse-forecast-mcp")
         strike = _load_adapter("server_strike", "eclipse-strike-mcp")
