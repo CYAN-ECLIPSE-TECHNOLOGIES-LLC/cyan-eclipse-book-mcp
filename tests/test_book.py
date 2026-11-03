@@ -1,3 +1,7 @@
+# Eclipse Book MCP
+# Copyright © 2026 Cyan Eclipse Technologies LLC · cetech.ai
+# Eclipse Book v0.1 tests — canonical objects, criteria
+
 """Eclipse Book v0.1 tests — canonical objects, criteria
 pinning + CRITERIA_CHANGED (spec 5.4), fee truth + FEE_UNVERIFIED
 (5.3), liquidity + probability law (5.5), resolution lifecycle
@@ -108,6 +112,44 @@ class TestInstruments(unittest.TestCase):
             ingest_event(state, provenance={
                 "feed": "x", "probability_estimate": "0.5"})
         self.assertIn("PROBABILITY_FIELD_FORBIDDEN", str(ctx.exception))
+
+    def test_poisoned_provenance_ingest_writes_nothing(self):
+        # PP3-H3 regression: guard is pre-commit — a refused
+        # ingest leaves no instrument, no receipt, no state change.
+        state = fresh_state()
+        before = copy.deepcopy(state)
+        with self.assertRaises(eng.ToolError) as ctx:
+            ingest_event(state, provenance={
+                "feed": "x", "probability_estimate": "0.5"})
+        self.assertIn("PROBABILITY_FIELD_FORBIDDEN", str(ctx.exception))
+        self.assertEqual(state, before)
+        self.assertEqual(state["instruments"], {})
+        self.assertEqual(state["receipts"], [])
+
+    def test_poisoned_refresh_writes_nothing(self):
+        # PP3-H3 regression, refresh path: poisoned trading_window
+        # refuses before any stored field or receipt changes.
+        state = fresh_state()
+        iid = ingest_event(state)["instrument"]["instrument_id"]
+        before = copy.deepcopy(state)
+        with self.assertRaises(eng.ToolError) as ctx:
+            ingest_event(state, trading_window={
+                "probability_window": "x"})
+        self.assertIn("PROBABILITY_FIELD_FORBIDDEN", str(ctx.exception))
+        self.assertEqual(state, before)
+        # Stored instrument still reads clean (no fail-closed dirt).
+        self.assertEqual(
+            eng.guard_no_probability(state["instruments"][iid]),
+            state["instruments"][iid])
+
+    def test_valid_ingest_still_commits(self):
+        state = fresh_state()
+        out = ingest_event(state, provenance={"feed": "x"})
+        iid = out["instrument"]["instrument_id"]
+        self.assertIn(iid, state["instruments"])
+        self.assertEqual([r["type"] for r in state["receipts"]],
+                         ["instrument_ingested"])
+        self.assertTrue(eng.verify_receipt_chain(state["receipts"]))
 
 
 class TestCriteriaChanged(unittest.TestCase):
@@ -352,3 +394,5 @@ class TestCrossAdapterParity(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+# Eclipse Book MCP · © 2026 Cyan Eclipse Technologies LLC · cetech.ai

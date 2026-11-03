@@ -7,3 +7,12 @@ keys/
 .env.*
 *.pyc
 state/
+
+# --- probe-mirror standard protections (2026-11-02) ---
+id_rsa*
+.git-credentials
+credentials*.json
+*secret*
+*.tfstate
+*.tfstate.*
+.mcp.json

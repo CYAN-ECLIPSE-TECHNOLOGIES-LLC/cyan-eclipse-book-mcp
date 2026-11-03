@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Eclipse Book MCP
+# Copyright © 2026 Cyan Eclipse Technologies LLC · cetech.ai
+
 """Eclipse Book MCP — v0.1.0, phase M0 (Market Core, data only).
 
 Powered by Cyan Eclipse Technologies (cetech.ai).
@@ -421,3 +424,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# Eclipse Book MCP · © 2026 Cyan Eclipse Technologies LLC · cetech.ai

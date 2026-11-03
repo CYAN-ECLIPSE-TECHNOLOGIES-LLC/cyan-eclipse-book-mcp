@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# Eclipse Book MCP
+# Copyright © 2026 Cyan Eclipse Technologies LLC · cetech.ai
+# End-to-end stdio smoke for Eclipse Book v0.1 (M0).
+
 """End-to-end stdio smoke for Eclipse Book v0.1 (M0).
 
 Temp state. Drives initialize -> instrument_ingest (event
@@ -110,3 +114,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# Eclipse Book MCP · © 2026 Cyan Eclipse Technologies LLC · cetech.ai

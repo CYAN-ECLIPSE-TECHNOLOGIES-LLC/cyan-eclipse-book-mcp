@@ -1,3 +1,7 @@
+# Eclipse Book MCP
+# Copyright © 2026 Cyan Eclipse Technologies LLC · cetech.ai
+# Eclipse Book — shared Market Core engine (spec
+
 """Eclipse Book — shared Market Core engine (spec
 eclipse-markets-suite-spec-20261025 sections 5-7).
 
@@ -26,6 +30,7 @@ Pure functions over a state dict: load/save are the caller's
 job. Stdlib only. Money math is Decimal end-to-end; prices are
 decimal strings on every surface (section 5.2).
 """
+import copy
 import hashlib
 import json
 from datetime import datetime, timezone
@@ -267,33 +272,41 @@ def ingest_instrument(state: dict, spec_in: dict) -> dict:
                 "hash": sha(criteria["text"]), "text": criteria["text"],
                 "source_ref": criteria.get("source_ref"),
                 "first_seen": now_iso()}]
+        # Probability guard runs PRE-COMMIT (PP3-H3): a refused
+        # ingest writes nothing — no instrument, no receipt.
+        guard_no_probability(inst)
         state["instruments"][iid] = inst
         emit_receipt(state, "instrument_ingested",
                      {"instrument_id": iid, "venue": inst["venue"],
                       "kind": kind})
-        return {"instrument": guard_no_probability(inst),
-                "criteria_changed": None}
+        return {"instrument": inst, "criteria_changed": None}
     # Refresh: status/native fields update; criteria are pinned.
-    existing["status"] = status
-    existing["native_status"] = native_status
+    # Mutations land on a copy and commit only after the
+    # probability guard passes (PP3-H3) — a refused refresh
+    # leaves the stored instrument and receipts untouched.
+    updated = copy.deepcopy(existing)
+    updated["status"] = status
+    updated["native_status"] = native_status
     if spec_in.get("trading_window"):
-        existing["trading_window"] = spec_in["trading_window"]
+        updated["trading_window"] = spec_in["trading_window"]
     if criteria:
         new_hash = sha(criteria["text"])
-        cur_hash = existing["criteria_versions"][-1]["hash"]
+        cur_hash = updated["criteria_versions"][-1]["hash"]
         if new_hash != cur_hash:
-            existing["criteria_versions"].append({
+            updated["criteria_versions"].append({
                 "hash": new_hash, "text": criteria["text"],
                 "source_ref": criteria.get("source_ref"),
                 "first_seen": now_iso()})
-            existing["resolution_criteria"] = criteria["text"]
-            existing["resolution_criteria_source_ref"] = criteria.get(
+            updated["resolution_criteria"] = criteria["text"]
+            updated["resolution_criteria_source_ref"] = criteria.get(
                 "source_ref")
             event = {"type": "CRITERIA_CHANGED", "instrument_id": iid,
                      "old_hash": cur_hash, "new_hash": new_hash}
-            emit_receipt(state, "criteria_changed", dict(event))
-    return {"instrument": guard_no_probability(existing),
-            "criteria_changed": event}
+    guard_no_probability(updated)
+    state["instruments"][iid] = updated
+    if event is not None:
+        emit_receipt(state, "criteria_changed", dict(event))
+    return {"instrument": updated, "criteria_changed": event}
 
 
 def criteria_snapshot(inst: dict):
@@ -602,3 +615,5 @@ def venue_status(state: dict, venue: str, as_of=None) -> dict:
             "fee_schedule_ref": sched["schedule_ref"] if sched else None,
             "fee_status": fee_status,
             "chain_valid": verify_receipt_chain(state["receipts"])}
+
+# Eclipse Book MCP · © 2026 Cyan Eclipse Technologies LLC · cetech.ai

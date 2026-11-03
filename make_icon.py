@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# Eclipse Book MCP
+# Copyright © 2026 Cyan Eclipse Technologies LLC · cetech.ai
+# Generate icon-512.png — brand §6: eclipse motif on navy
+
 """Generate icon-512.png — brand §6: eclipse motif on navy
 (#0d1b2a), one per-product glyph. Book's glyph is the order
 book itself: two columns of bid/ask levels meeting at a spread,
@@ -43,3 +47,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# Eclipse Book MCP · © 2026 Cyan Eclipse Technologies LLC · cetech.ai

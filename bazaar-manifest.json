@@ -22,7 +22,7 @@
    "bench isolation"
   ],
   "not_tested": [
-   "Live venue reads of any kind \u2014 M0 contains no network code path; adapters run against fixtures shaped like the real public API responses behind a transport seam. Live public-read verification is a later M0-exit step.",
+   "Live venue reads inside the shipped build \u2014 M0 contains no network code path; live Kalshi/Polymarket public payloads were verified through the transport seam from the Verity bench seat 2026-11-02 (BENCH-VERITY.md: PASS-WITH-CONDITIONS), but no in-build live adapter ships in v0.1.0.",
    "Order placement, account reads, and the Wallet mandate gate \u2014 M2/M1 scope, owner-gated (spec 18, decision D3). M0 order_draft records an unsubmitted DRAFT with mandate_pre_eval NOT_EVALUATED; no submission path exists.",
    "Fee schedules as live data \u2014 shipped schedules are fixture-shaped records with provenance labels saying so; the live fetch + account-specific tier provenance lands with the adapters' live step.",
    "Kalshi / Polymarket US / Kraken / Binance.US / Alpaca chapters \u2014 specced (suite spec 10-12), not built in M0."
@@ -39,7 +39,7 @@
  "price_model": "Free local v0.1; family pricing TBD per spec",
  "repo": null,
  "slug": "eclipse-book-mcp",
- "status": "In development \u2014 v0.1.0 M0 local build (Market Core, data only; fixtures behind transport seams; CERTIFIED(local) \u2014 Eclipse Bazaar Test Bench 2026-10-25)",
+ "status": "Live \u2014 v0.1.0 M0 local build (Market Core, data only; CERTIFIED(local) \u2014 Eclipse Bazaar Test Bench 2026-10-25; Verity bench 2026-11-02 PASS-WITH-CONDITIONS incl. live Kalshi/Polymarket public reads via the transport seam \u2014 see BENCH-VERITY.md)",
  "tagline": "Market data + venue access layer \u2014 not an exchange: one book, one fee truth, one ledger of record.",
  "tools": [
   "instrument_ingest",
