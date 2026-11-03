@@ -131,3 +131,26 @@ no socket/urllib/http code in `server.py` / `book_engine.py`).
   advice-shaped claims.
 
 — Verity bench, 2026-11-02
+
+**Postscript (2026-11-02, ship-day execution).** C-B2
+reconciled to 0.1.0 across VERSION / pyproject / server.json
+(the MCP Registry already held book@0.1.0, so the registry
+snapshot and the package now describe the same build); tree
+committed (371b61e) and tag v0.1.0 pushed. The Publish-to-PyPI
+run (gh 41557921209) FAILED in the build job's test step —
+the test loader assumed the suite's sibling layout, which a
+standalone checkout doesn't have — and the publish job never
+ran: nothing reached PyPI (verified after the fact via the
+JSON API, the simple index, and pip; an interim "uploaded"
+reading from this VM's egress was a false signal and is
+withdrawn). Loader fixed with an in-repo fallback + the
+cross-adapter parity test now skips with a stated reason
+when siblings are absent (commit c60ba0d; standalone suite
+green: 18 pass + 1 skip; sibling layout 19/19 + smoke).
+OWNER-HANDS' Trusted Publisher table also named the wrong
+repo (`eclipse-book-mcp`; actual: `cyan-eclipse-book-mcp`) —
+corrected in the same commit. Re-run is HELD pending the
+owner's delete + re-add of the pending publisher under the
+corrected repo name; on his confirmation the v0.1.0 tag
+re-points to c60ba0d and the workflow re-runs by dispatch on
+that ref.
